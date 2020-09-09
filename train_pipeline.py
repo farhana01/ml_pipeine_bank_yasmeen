@@ -39,5 +39,7 @@ print(train_data_copy.shape)
 
 
 #fill the missing value with mean/mode
-
+#train_data.fillna(train_data.mode(),inplace=True)
+train_data.fillna(train_data.mean(),inplace=True)
+train_data.isnull().sum()
 
