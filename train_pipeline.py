@@ -96,4 +96,11 @@ train_data=pd.DataFrame(train_data)
 train_data.head()
 train_data.info()
 
+#correlation check
+train_copy = train_data.copy()
+corr_matrix = train_copy.corr().abs()
+upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+upper
+to_drop = [var for var in upper.columns if any(upper[var] > .90)]
+to_drop
 
