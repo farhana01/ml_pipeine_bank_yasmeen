@@ -38,6 +38,8 @@ print(train_data.isnull().sum().sum())
 # print(train_data_copy.isnull().sum().sum())
 # print(train_data_copy.shape)
 
+train_data.drop[0]
+train_data.info()
 
 #fill the missing value with mean/mode
 #train_data.fillna(train_data.mode(),inplace=True)
@@ -104,3 +106,14 @@ upper
 to_drop = [var for var in upper.columns if any(upper[var] > .90)]
 to_drop
 
+#x y split
+x_train= train_data.iloc[:,:-1]
+y_train= train_data.iloc[:,-1]
+x_train.head()
+x_train.info()
+#scalling
+
+#model
+from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression().fit(x_train, y_train)
+#predictions = clf.predict(x_test)
