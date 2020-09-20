@@ -38,7 +38,7 @@ print(train_data.isnull().sum().sum())
 # print(train_data_copy.isnull().sum().sum())
 # print(train_data_copy.shape)
 
-train_data.drop[0]
+train_data.drop(train_data.columns[0], axis=1, inplace= True)
 train_data.info()
 
 #fill the missing value with mean/mode
@@ -88,7 +88,7 @@ train_data['loan'].head()
 
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
-ct = ColumnTransformer (transformers = [('encoder', OneHotEncoder(),[2,3, 8])],remainder='passthrough')
+ct = ColumnTransformer (transformers = [('encoder', OneHotEncoder(),[1,2, 7])],remainder='passthrough')
 train_data = np.array(ct.fit_transform(train_data))
 train_data
 #why should we transform it to numpy arrayt? 
@@ -117,3 +117,11 @@ x_train.info()
 from sklearn.linear_model import LogisticRegression
 clf = LogisticRegression().fit(x_train, y_train)
 #predictions = clf.predict(x_test)
+
+#save the model
+#from sklearn.externals import joblib
+#filename='finalized_model.sav'
+#joblib.dump(model, filename)
+
+#load the model from disk
+#model = joblib.load('finalized_model.sav')
