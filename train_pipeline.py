@@ -119,9 +119,8 @@ clf = LogisticRegression().fit(x_train, y_train)
 #predictions = clf.predict(x_test)
 
 #save the model
-#from sklearn.externals import joblib
-#filename='finalized_model.sav'
-#joblib.dump(model, filename)
+from sklearn.externals import joblib
+filename='finalized_model.sav'
+joblib.dump(clf, filename)
 
-#load the model from disk
-#model = joblib.load('finalized_model.sav')
+

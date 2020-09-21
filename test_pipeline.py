@@ -52,19 +52,61 @@ print(test_data.isnull().sum())
 
 #vizualizing outliers
 sns.set(style="whitegrid")
-ax=sns.boxplot(data=train_data["age"])
+ax=sns.boxplot(data=test_data["age"])
 
 #remove outliers
 from scipy import stats
 thresh=3
-train_data=train_data[np.abs(stats.zscore(train_data["age"]))<thresh]
+test_data=test_data[np.abs(stats.zscore(test_data["age"]))<thresh]
 #vizualizing outliers
 sns.set(style="whitegrid")
-ax=sns.boxplot(data=train_data["age"])
+ax=sns.boxplot(data=test_data["age"])
 
-train_data=train_data[np.abs(stats.zscore(train_data["balance"]))<thresh]
-train_data=train_data[np.abs(stats.zscore(train_data["day"]))<thresh]
-train_data=train_data[np.abs(stats.zscore(train_data["duration"]))<thresh]
-train_data=train_data[np.abs(stats.zscore(train_data["campaign"]))<thresh]
-train_data=train_data[np.abs(stats.zscore(train_data["pdays"]))<thresh]
-train_data=train_data[np.abs(stats.zscore(train_data["previous"]))<thresh]
+test_data=test_data[np.abs(stats.zscore(test_data["balance"]))<thresh]
+test_data=test_data[np.abs(stats.zscore(test_data["day"]))<thresh]
+test_data=test_data[np.abs(stats.zscore(test_data["duration"]))<thresh]
+test_data=test_data[np.abs(stats.zscore(test_data["campaign"]))<thresh]
+test_data=test_data[np.abs(stats.zscore(test_data["pdays"]))<thresh]
+
+#string conversion , label encoding, one hot encoder
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+#test_data['marital'] = le.fit_transform(test_data['marital'])
+test_data['loan'] = le.fit_transform(test_data['loan'])
+test_data['class'] = le.fit_transform(test_data['class'])
+test_data['housing'] = le.fit_transform(test_data['housing'])
+test_data.info()
+test_data['loan'].head()
+
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+ct = ColumnTransformer (transformers = [('encoder', OneHotEncoder(),[1,2, 7])],remainder='passthrough')
+test_data = np.array(ct.fit_transform(test_data))
+test_data
+#why should we transform it to numpy arrayt? 
+#test_data is numpy array now not a dataframe, will it be a problem?
+#test_data.info()
+test_data=pd.DataFrame(test_data)
+test_data.head()
+test_data.info()
+
+#correlation check
+train_copy = test_data.copy()
+corr_matrix = train_copy.corr().abs()
+upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+upper
+to_drop = [var for var in upper.columns if any(upper[var] > .90)]
+to_drop
+
+#x y split
+x_test= test_data.iloc[:,:-1]
+y_test= test_data.iloc[:,-1]
+x_test.head()
+x_test.info()
+
+
+#load the model from disk
+from sklearn.externals import joblib
+model = joblib.load('finalized_model.sav')
+result = model.score(x_test, y_test)
