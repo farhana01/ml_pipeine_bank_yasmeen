@@ -109,4 +109,5 @@ x_test.info()
 #load the model from disk
 from sklearn.externals import joblib
 model = joblib.load('finalized_model.sav')
+y_pred= model.pred
 result = model.score(x_test, y_test)
